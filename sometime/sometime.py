@@ -13,8 +13,7 @@ class Sometime:
     def timestamp(self, ts=0):
         self.ts=ts
         self.hourglass = parse(self.ts, self.formatting, self.verbose)
-        self.ts = self.hourglass.get("timestamp", 0)
-        return self
+        return self.hourglass.get("timestamp", 0)
     
     def moment(self):
         # get whole date information
