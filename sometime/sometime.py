@@ -69,7 +69,7 @@ class Sometime:
         return self
     
     def yesterday(self, formatting):
-        self.timestamp(ts=calculate(self.ts, days=-1)
+        self.timestamp(ts=calculate(self.ts, days=-1))
         return self.custom(formatting)
     
     def custom(self, formatting):
