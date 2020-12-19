@@ -1,0 +1,10 @@
+README.md
+setup.cfg
+setup.py
+sometime/__init__.py
+sometime/sometime.py
+sometime/version.py
+sometime.egg-info/PKG-INFO
+sometime.egg-info/SOURCES.txt
+sometime.egg-info/dependency_links.txt
+sometime.egg-info/top_level.txt
