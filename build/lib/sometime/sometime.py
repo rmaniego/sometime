@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 
 class Sometime:
     def __init__(self, timestamp=0, formatting="%Y-%m-%d", verbose=False):
-        self.ts=0 # example: 1604757486
+        self.ts=timestamp # example: 1604757486
         self.formatting="%Y-%m-%d"
         self.verbose=False
         self.hourglass = parse(self.ts, self.formatting, self.verbose)
