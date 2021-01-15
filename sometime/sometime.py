@@ -11,8 +11,9 @@ class Sometime:
         self.ts = self.hourglass.get("timestamp", 0)
     
     def timestamp(self, ts=0):
-        self.ts=ts
-        self.hourglass = parse(self.ts, self.formatting, self.verbose)
+        if int(ts) > 0:
+            self.ts=ts
+            self.hourglass = parse(self.ts, self.formatting, self.verbose)
         return self.hourglass.get("timestamp", 0)
     
     def from_iso(self, val, f):
@@ -20,6 +21,7 @@ class Sometime:
         try:
             dt = datetime.strptime(val, f)
             self.ts = round(time.mktime(dt.timetuple()))
+            self.formatting = f
             self.hourglass = parse(self.ts, self.formatting, self.verbose)
         except:
             print("Sometime Warning: Check the formatting before running again.")
