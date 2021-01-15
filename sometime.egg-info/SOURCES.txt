@@ -1,6 +1,10 @@
+LICENSE
 README.md
+commit.sh
+pypi.sh
 setup.cfg
 setup.py
+test.py
 sometime/__init__.py
 sometime/sometime.py
 sometime/version.py
@@ -8,3 +12,6 @@ sometime.egg-info/PKG-INFO
 sometime.egg-info/SOURCES.txt
 sometime.egg-info/dependency_links.txt
 sometime.egg-info/top_level.txt
+sometime/__pycache__/__init__.cpython-38.pyc
+sometime/__pycache__/sometime.cpython-38.pyc
+sometime/__pycache__/version.cpython-38.pyc
