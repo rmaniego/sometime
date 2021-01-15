@@ -6,7 +6,7 @@ class Sometime:
     def __init__(self, timestamp=0, formatting="%Y-%m-%d", verbose=False):
         self.ts=timestamp # example: 1604757486
         self.formatting="%Y-%m-%d"
-        self.verbose=False
+        self.verbose=verbose
         self.hourglass = parse(self.ts, self.formatting, self.verbose)
         self.ts = self.hourglass.get("timestamp", 0)
     
@@ -14,6 +14,16 @@ class Sometime:
         self.ts=ts
         self.hourglass = parse(self.ts, self.formatting, self.verbose)
         return self.hourglass.get("timestamp", 0)
+    
+    def from_iso(self, val, f):
+        # print(f"Converting {val} to UNIX timestamp...")
+        try:
+            dt = datetime.strptime(val, f)
+            self.ts = round(time.mktime(dt.timetuple()))
+            self.hourglass = parse(self.ts, self.formatting, self.verbose)
+        except:
+            print("Sometime Warning: Check the formatting before running again.")
+        return self
     
     def moment(self):
         # get whole date information
