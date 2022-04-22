@@ -1,35 +1,134 @@
 # sometime
 Get timestamp, formatted date, and perform date/time operations.
 
+## Official Release
+**Sometime** can now be used on your Python projects through PyPi by running pip command on a Python-ready environment.
+
+`pip install sometime --upgrade`
+
+Current version is 1.1.0, but more updates are coming soon.
+
 ```python
-from sometime.sometime import Sometime
+from sometime import Sometime
+```
 
-date = Sometime()
-print(date.timestamp())
 
-# access dictionary
-moment = date.moment()
+```python
+# Default initialization
+dt = Sometime()
 
-# to add/subtract, set parameter to any positive/negative integer
-date.year(1) # month(), day(), hour(), minute(), second()
-print(date.year())
+# Custom initialization
+seconds = 1650614778
+milliseconds = seconds * 1000
+dt = Sometime(seconds)
+dt = Sometime(milliseconds)
 
-# custom date increments / decrements
-# date.add(years=0, months=0, days=0, hours=0, minutes=0, seconds=0)
-date.add(years=5, months=1, days=7)
-date.add(hours=1, minutes=30)
-date.add(minutes=1, seconds=25)
+# Set timestamp in seconds or milliseconds
+dt.timestamp(seconds)
 
-# Name of Month e.g. November
-print(date.name_of_month()) 
+# Set date/time based on date/time string
+# https://help.gnome.org/users/gthumb/stable/gthumb-date-formats.html.en"
+dt.from_iso("2022-04-22", "%Y-%m-%d")
+print("Timestamp:", dt.timestamp())
+```
 
-# Day of Week e.g. Monday
-print(date.day_of_week()) 
+# Get current Unix Timestamp in milliseconds
+```python
+print("Current Timestamp:", dt.now())
+```
 
-# AM / PM
-print(date.period())
+# Get Unix Timestamp in milliseconds
+```python
+print("Timestamp:", dt.timestamp())
+```
 
-# Custom date formats
-print(date.("%Y-%m-%d %H:%M:$S"))
+# Add or subtract years
+```python
+dt = Sometime(seconds)
+dt.year(years=-25)
+dt.year(years=100)
+print("Year:", dt.year())
+```
 
+# Get name of the month
+```python
+dt = Sometime(seconds)
+dt.name_of_month()
+print("Date of the Month:", dt.name_of_month())
+```
+
+# Add or subtract months
+```python
+dt = Sometime(seconds)
+dt.month(months=-1)
+dt.month(months=12)
+print("Month:", dt.month())
+```
+
+# Add or subtract days
+```python
+dt = Sometime(seconds)
+dt.day(days=-7)
+dt.day(days=14)
+print("Day:", dt.day())
+```
+
+# Add or subtract hours
+```python
+dt = Sometime(seconds)
+dt.hour(hours=-8)
+dt.hour(hours=24)
+hour = dt.hour()
+print("Hour:", dt.hour())
+```
+
+# Add or subtract minutes
+```python
+dt = Sometime(seconds)
+dt.minute(minutes=-5)
+dt.minute(minutes=30)
+minute = dt.minute()
+print("Minute:", dt.minute())
+```
+
+# Add or subtract seconds
+```python
+dt = Sometime(seconds)
+dt.second(seconds=-1)
+dt.second(seconds=30)
+second = dt.second()
+print("Second:", dt.second())
+```
+
+# Get if AM/PM
+```python
+dt = Sometime(seconds)
+dt.period()
+print("Period:", dt.period())
+```
+
+# Get the Day of the Week
+```python
+dt = Sometime(seconds)
+print("Day of the Week:", dt.day_of_week())
+```
+
+# Add or subtract to date/time
+```python
+dt = Sometime(seconds)
+print("Timestamp:", dt.timestamp())
+dt.add(years=1, months=2, days=3, hours=4, minutes=5, seconds=6)
+print("Timestamp:", dt.timestamp())
+```
+
+# Format date/time into string representation
+```python
+dt = Sometime(seconds)
+print("Timestamp:", dt.custom("%Y-%m-%d %H:%M:%S %p"))
+```
+
+# Get yesterday's on custom formatting
+```python
+dt = Sometime(seconds)
+print("Yesterday:", dt.yesterday("%Y-%m-%d %H:%M:%S %p"))
 ```
