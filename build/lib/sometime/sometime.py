@@ -3,123 +3,105 @@ from datetime import datetime, timedelta
 
 
 class Sometime:
-    def __init__(self, timestamp=0, formatting="%Y-%m-%d", verbose=False):
-        self.ts=timestamp # example: 1604757486
-        self.formatting="%Y-%m-%d"
-        self.verbose=verbose
-        self.hourglass = parse(self.ts, self.formatting, self.verbose)
-        self.ts = self.hourglass.get("timestamp", 0)
+    """ Manipulate date/time in Unix Timestamp (milliseconds). """
+    def __init__(self, timestamp=None):
+        self._ms = _clean_timestamp(timestamp)
     
-    def timestamp(self, ts=0):
-        if int(ts) > 0:
-            self.ts=ts
-            self.hourglass = parse(self.ts, self.formatting, self.verbose)
-        return self.hourglass.get("timestamp", 0)
+    def now(self):
+        """ Get current timestamp. """
+        return _clean_timestamp(None)
     
-    def from_iso(self, val, f):
-        # print(f"Converting {val} to UNIX timestamp...")
-        try:
-            dt = datetime.strptime(val, f)
-            self.ts = round(time.mktime(dt.timetuple()))
-            self.formatting = f
-            self.hourglass = parse(self.ts, self.formatting, self.verbose)
-        except:
-            print("Sometime Warning: Check the formatting before running again.")
-        return self
+    def timestamp(self, timestamp=None):
+        """ Get or set timestamp. """
+        if timestamp is None:
+            return self._ms
+        self._ms = _clean_timestamp(timestamp)
     
-    def moment(self):
-        # get whole date information
-        return self.hourglass
-    
-    def year(self, years=0):
-        if years == 0:
-            return self.hourglass.get("%Y", "")
-        self.timestamp(ts=calculate(self.ts, years=years))
-        return self.year()
+    def year(self, years=None):
+        if isinstance(years, int):
+            self._ms = _calculate(self._ms, years=years)
+        return self.custom("%Y")
     
     def name_of_month(self):
-        return self.hourglass.get("%B", "")
+        return self.custom("%B")
     
-    def month(self, months=0):
-        if months == 0:
-            return self.hourglass.get("%m", "")
-        self.timestamp(ts=calculate(self.ts, months=months))
-        return self.month()
+    def month(self, months=None):
+        if isinstance(months, int):
+            self._ms = _calculate(self._ms, months=months)
+        return self.custom("%m")
     
-    def day(self, days=0):
-        if days == 0:
-            return self.hourglass.get("%d", "")
-        self.timestamp(ts=calculate(self.ts, days=days))
-        return self.day()
+    def day(self, days=None):
+        if isinstance(days, int):
+            self._ms = _calculate(self._ms, days=days)
+        return self.custom("%d")
     
-    def hour(self, hours=0):
-        if hours == 0:
-            return self.hourglass.get("%H", "")
-        self.timestamp(ts=calculate(self.ts, hours=hours))
-        return self.hour()
+    def hour(self, hours=None):
+        if isinstance(hours, int):
+            self._ms = _calculate(self._ms, hours=hours)
+        return self.custom("%H")
     
-    def minute(self, minutes=0):
-        if minutes == 0:
-            return self.hourglass.get("%M", "")
-        self.timestamp(ts=calculate(self.ts, minutes=minutes))
-        return self.minute()
+    def minute(self, minutes=None):
+        if isinstance(minutes, int):
+            self._ms = _calculate(self._ms, minutes=minutes)
+        return self.custom("%M")
     
-    def second(self, seconds=0):
-        if seconds == 0:
-            return self.hourglass.get("%S", "")
-        self.timestamp(ts=calculate(self.ts, seconds=seconds))
-        return self.second()
+    def second(self, seconds=None):
+        if isinstance(seconds, int):
+            self._ms = _calculate(self._ms, seconds=seconds)
+        return self.custom("%S")
     
     def period(self):
-        return self.hourglass.get("%p", "")
+        return self.custom("%p")
     
     def day_of_week(self):
-        return self.hourglass.get("%A", "")
+        return self.custom("%A")
     
     def add(self, years=0, months=0, days=0, hours=0, minutes=0, seconds=0):
-        self.timestamp(ts=calculate(self.ts, years=years, months=months, days=days, hours=hours, minutes=minutes, seconds=seconds))
+        self._ms = _calculate(self._ms, years=years, months=months, days=days, hours=hours, minutes=minutes, seconds=seconds)
         return self
     
     def yesterday(self, formatting):
-        self.timestamp(ts=calculate(self.ts, days=-1))
-        return self.custom(formatting)
+        """ Get yesterdays date/time in custom formatting. """
+        temp = self._ms
+        self._ms = _calculate(self._ms, days=-1)
+        formatted = self.custom(formatting)
+        self._ms = temp
+        return formatted
+    
+    def from_iso(self, value, formatting):
+        """ Converting datetime to UNIX timestamp. """
+        try:
+            dt = datetime.strptime(value, formatting)
+            self._ms = int(time.mktime(dt.timetuple()) * 1000)
+            return self
+        except:
+            print("\nSometime Warning: Invalid formatting", formatting)
     
     def custom(self, formatting):
-        # set custom formatting
-        self.formatting=formatting
-        self.hourglass = parse(self.ts, self.formatting, self.verbose)
-        return self.hourglass.get(formatting, "")
-        
-    
-def parse(ts=0, formatting="%Y-%m-%d", verbose=False):
-    hourglass = {}
-    try:
-        ## format time
-        if ts == 0: ts = int(time.time())
-        t = time.localtime(int(ts))
-        hourglass.update({"timestamp": ts})
-        hourglass.update({"%Y": time.strftime("%Y", t)})
-        hourglass.update({"%B": time.strftime("%B", t)})
-        hourglass.update({"%m": time.strftime("%m", t)})
-        hourglass.update({"%d": time.strftime("%d", t)})
-        hourglass.update({"%H": time.strftime("%H", t)})
-        hourglass.update({"%M": time.strftime("%M", t)})
-        hourglass.update({"%S": time.strftime("%S", t)})
-        hourglass.update({"%p": time.strftime("%p", t)})
-        hourglass.update({"%A": time.strftime("%A", t)})
-        hourglass.update({formatting: time.strftime(formatting, t)})
-    except:
-        if verbose:
-            print("Sometime usage: Sometime(ts=0, formatting="", verbose=False)")
-    return hourglass
+        """ https://help.gnome.org/users/gthumb/stable/gthumb-date-formats.html.en """
+        try:
+            ts = time.localtime(self._ms // 1000)
+            return time.strftime(formatting, ts)
+        except:
+            print("\nSometime Warning: Invalid formatting", formatting)
 
-def calculate(ts, years=0, months=0, days=0, hours=0, minutes=0, seconds=0):
-    if years > 0: days += (years * 365.25)
-    if months > 0: days += (months * (365.25 / 12))
-    if hours > 0: days += (hours / 24)
-    if minutes > 0: days += (minutes / (24 * 60))
-    if seconds > 0: days += (seconds / (24 * 60 * 60))
-    ts = int(round(int(ts) + (days * 24 * 60 * 60)))
-    if len(str(ts)) >= 11:
-        ts = ts / 1000
-    return ts
+def _clean_timestamp(timestamp):
+    """ Reformat timestamp as necessary. """
+    if isinstance(timestamp, (int, float)):
+        if len(str(int(timestamp))) == 10:
+            timestamp = int(time.time() * 1000)
+        if len(str(int(timestamp))) == 13:
+            return int(timestamp)
+    return int(time.time()*1000)
+
+def _calculate(timestamp, years=0, months=0, days=0, hours=0, minutes=0, seconds=0):
+    """ Calculate arithmetic operations on timestamp. """
+    try:
+        days += (years * 365.25)
+        days += (months * (365.25 / 12))
+        days += (hours / 24)
+        days += (minutes / (24 * 60))
+        days += (seconds / (24 * 60 * 60))
+        return round((timestamp + (days * 24 * 60 * 60 * 1000)))
+    except:
+        print("\nSometime Warning: Date and time values must be numeric.")

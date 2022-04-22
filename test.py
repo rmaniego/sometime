@@ -90,3 +90,11 @@ print("Timestamp:", dt.custom("%Y-%m-%d %H:%M:%S %p"))
 print("\nGet yestderday on custom formatting")
 dt = Sometime(seconds)
 print("Yesterday:", dt.yesterday("%Y-%m-%d %H:%M:%S %p"))
+
+# more tests
+print("\nMore tests...")
+ts = 1508198400000
+dt = Sometime(timestamp=ts)
+print("Timestamp:", dt.timestamp())
+dt.add(days=90)
+print("Timestamp:", dt.timestamp())

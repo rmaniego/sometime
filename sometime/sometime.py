@@ -56,7 +56,7 @@ class Sometime:
     def day_of_week(self):
         return self.custom("%A")
     
-    def add(self, years=None, months=None, days=None, hours=None, minutes=None, seconds=None):
+    def add(self, years=0, months=0, days=0, hours=0, minutes=0, seconds=0):
         self._ms = _calculate(self._ms, years=years, months=months, days=days, hours=hours, minutes=minutes, seconds=seconds)
         return self
     
@@ -103,5 +103,5 @@ def _calculate(timestamp, years=0, months=0, days=0, hours=0, minutes=0, seconds
         days += (minutes / (24 * 60))
         days += (seconds / (24 * 60 * 60))
         return round((timestamp + (days * 24 * 60 * 60 * 1000)))
-    except Exception as e:
-        print("\nSometime Warning 3: Date and time values must be numeric.")
+    except:
+        print("\nSometime Warning: Date and time values must be numeric.")

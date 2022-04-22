@@ -6,7 +6,7 @@ with open("README.md", "r") as f:
 setuptools.setup(
     name = "sometime",
     packages = ["sometime"],
-    version = "1.1.0",
+    version = "1.1.1",
     license="MIT",
     description = "Get timestamp, formatted date, and perform date/time operations.",
     long_description=long_description,
