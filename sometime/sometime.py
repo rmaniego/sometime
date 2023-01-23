@@ -85,7 +85,7 @@ class Sometime:
     def yesterday(self, formatting):
         """Get yesterdays date/time in custom formatting."""
         temp = _calculate(self._timestamp, days=-1)
-        return _custom(self, temp, formatting, self._utc)
+        return _custom(temp, formatting, self._utc)
 
     def from_iso(self, value, formatting):
         """Converting datetime to UNIX timestamp."""
@@ -97,10 +97,10 @@ class Sometime:
         return self
 
     def custom(self, formatting):
-        return _custom(self, self._timestamp, formatting, self._utc)
+        return _custom(self._timestamp, formatting, self._utc)
 
 
-def _custom(self, timestamp, formatting, utc):
+def _custom(timestamp, formatting, utc):
     """https://help.gnome.org/users/gthumb/stable/gthumb-date-formats.html.en"""
     if utc:
         return datetime.utcfromtimestamp(timestamp).strftime(formatting)
