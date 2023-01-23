@@ -98,3 +98,5 @@ ts.add(days=90)
 print("Timestamp:", ts.timestamp())
 
 print("Year: " + ts["%Y"])
+
+print("Current Year:", Sometime(utc=True).custom("%Y"))

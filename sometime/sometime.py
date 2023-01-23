@@ -23,7 +23,7 @@ class Sometime:
 
     def now(self):
         """Get current timestamp."""
-        return _clean_timestamp()
+        return _clean_timestamp(utc=self._utc)
 
     def timestamp(self, timestamp=None):
         """Get or set timestamp."""
@@ -111,8 +111,8 @@ def _clean_timestamp(timestamp=None, utc=False):
     """Reformat timestamp as necessary."""
     if timestamp is None:
         if utc:
-            return datetime.now(timezone.utc)
-        return datetime.now()
+            return datetime.now(timezone.utc).timestamp()
+        return datetime.now().timestamp()
     return float(timestamp)
 
 

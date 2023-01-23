@@ -4,7 +4,7 @@ build-backend = "pdm.pep517.api"
 
 [project]
 name = "sometime"
-version = "1.2.1"
+version = "1.2.2"
 description = "Get timestamp, formatted date, and perform date/time operations."
 readme = "README.md"
 requires-python = ">=3.10"
