@@ -1,3 +1,3 @@
 rm -fr dist/*
-py setup.py sdist bdist_wheel
-py -m twine upload dist/*
+py -m build --sdist --wheel --outdir dist/
+py -m twine upload dist/* --verbose
